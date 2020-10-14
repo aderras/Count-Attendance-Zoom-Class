@@ -19,13 +19,16 @@ def getUserInput(prompt, required=False, defaultInput=''):
 
 
 # First, ask for a few inputs
+print('For the following user inputs press enter to use default values, when available.')
 logPath = getUserInput('Enter directory where log files are stored in the fomat "path-to-files/". Press enter to use default directory. ', False, 'log-files/' )
 
 rosterName = getUserInput('Enter file name of class roster. Press enter to use default. ' , False, 'roster.csv')
 
-startTime = getUserInput('Enter time to take attendance in the format HH:MM AM (or PM): ', True)
+startTime = getUserInput('Enter the time attendance is taken in the format HH:MM AM (or PM): ', True)
 
-duration = getUserInput('Enter minimum duration of class (minutes): ', True)
+duration = getUserInput('Enter the minimum duration considered present (minutes): ', True)
+
+outputName = getUserInput('Enter output filename: ', False, 'computed_grades.xlsx')
 
 ###########################################################################
 ########################################## Grade calculations start here ##
@@ -52,7 +55,7 @@ for first, last in zip(firstNames, lastNames):
 # Import all the log files. These 2 different types of log file come from
 # Zoom. Note that chat files must contain date in their name in the format
 # ddmmyyyy (e.g. Jan 1, 2020 would 01012020)
-filenames = glob.glob('log-files/*')
+filenames = glob.glob(logPath+ '*')
 logFiles = []
 
 for file in filenames:
@@ -111,8 +114,7 @@ parDf = parDf[ columns ]
 #   2. Sheet 2 has all students and their participation grades for all dates
 #   3  Sheet 3 is an error log. Contains all names that were not catagorized.
 #      This typically happens when names are mispelled. 
-outputFile = 'computed_grades.xlsx'
-writer = pd.ExcelWriter(outputFile, engine = 'xlsxwriter')
+writer = pd.ExcelWriter(outputName, engine = 'xlsxwriter')
 attDf.to_excel(writer, sheet_name = 'Attendance')
 parDf.to_excel(writer, sheet_name = 'Participation')
 
