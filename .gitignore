@@ -1,1 +1,5 @@
-log-files/*
+log-files-local/
+computed_grades.xlsx
+.gitignore
+test.py
+__pycache__
