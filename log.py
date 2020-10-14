@@ -59,7 +59,7 @@ class LogFile:
             try:
 
                 # Search for these column names
-                df = self.raw_data[['Meeting ID', 'Start Time', 'End Time']]
+                df = self.raw_data[['Meeting ID', 'Start Time', 'End Time', 'Duration (Minutes)']]
 
                 # If the file contains these columns, then this is an attendance file
                 # Check that this is the right type of Zoom file. (There are sequential

@@ -17,7 +17,7 @@ class Student:
 
 		self.attendance_total = {}
 	
-	def computeGrades(self, logList):
+	def computeGrades(self, logList, computeParticipation = False):
 
 		
 		for log in logList:
@@ -27,7 +27,7 @@ class Student:
 
 				self.computeAttendance(log)
 
-			elif log.file_type == 2:
+			elif log.file_type == 2 and computeParticipation:
 
 				self.computeParticipation(log)
 
@@ -56,6 +56,9 @@ class Student:
 			totalTime = 0
 			for i in range(len(studentAppearances)):
 
+				# Zoom contains a column that lists duration, but for some reason those values 
+				# become Nan when imported to python with pandas. A work around is to calculate 
+				# the difference based on Join/Leave times. This is probably inefficient.
 				enterTime = pd.to_datetime( studentAppearances[i][1] )
 				exitTime = pd.to_datetime( studentAppearances[i][2] )
 

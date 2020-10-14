@@ -3,6 +3,7 @@ from student import Student
 import glob
 import pandas as pd
 
+# add comments, amel.
 
 def getUserInput(prompt, required=False, defaultInput=''):
 
@@ -28,7 +29,10 @@ startTime = getUserInput('Enter the time attendance is taken in the format HH:MM
 
 duration = getUserInput('Enter the minimum duration considered present (minutes): ', True)
 
+computeParticipation = 'y' == getUserInput('Compute participation using chat files? y/n ', False, 'n')
+
 outputName = getUserInput('Enter output filename: ', False, 'computed_grades.xlsx')
+
 
 ###########################################################################
 ########################################## Grade calculations start here ##
@@ -101,13 +105,17 @@ for student in studentList:
   # Add a new row to the dataframe 
   attDf = pd.concat( [ pd.DataFrame(newRow) , attDf ] )
 
-  # Same steps for participation grade
-  newRow = {'Name': student.first_name + ' '+ student.last_name}
-  newRow.update( student.participation_grade )
-  parDf = pd.concat( [ pd.DataFrame(newRow) , parDf ] )
+
+  # Same steps for participation grade, if calculated
+  if computeParticipation:
+      newRow = {'Name': student.first_name + ' '+ student.last_name}
+      newRow.update( student.participation_grade )
+      parDf = pd.concat( [ pd.DataFrame(newRow) , parDf ] )
 
 attDf = attDf[ columns ]
-parDf = parDf[ columns ]
+
+if computeParticipation:
+    parDf = parDf[ columns ]
   
 # Final file contains
 #   1. Sheet 1 has all students and their attendance grades for all dates
@@ -116,7 +124,9 @@ parDf = parDf[ columns ]
 #      This typically happens when names are mispelled. 
 writer = pd.ExcelWriter(outputName, engine = 'xlsxwriter')
 attDf.to_excel(writer, sheet_name = 'Attendance')
-parDf.to_excel(writer, sheet_name = 'Participation')
+
+if computeParticipation:
+    parDf.to_excel(writer, sheet_name = 'Participation')
 
 # Create a dataframe of all the names that were not counted. 
 errDf = pd.DataFrame()
