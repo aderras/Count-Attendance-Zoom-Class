@@ -1,4 +1,4 @@
-# grader-zoom-class
+# Count-Attendance-Zoom-Class
 Take attendance for online Zoom class
 
 Author: Amel Derras-Chouk
@@ -6,7 +6,7 @@ Author: Amel Derras-Chouk
 Take attendance for online Zoom classes, and optionally count student participation. (See participation section for special instructions.) Written in Python 3.7.4
 
 Required libraries:
-  - Pandas to read and build .csv .xlsx files
+  - Pandas to read and build .csv or .xlsx files
 
 # Usage #
 
