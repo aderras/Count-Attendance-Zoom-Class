@@ -27,7 +27,7 @@ rosterName = getUserInput('Enter file name of class roster. Press enter to use d
 
 startTime = getUserInput('Enter the time attendance is taken in the format HH:MM AM (or PM): ', True)
 
-duration = getUserInput('Enter the minimum duration considered present (minutes): ', True)
+duration = getUserInput('Enter the minimum duration considered present (minutes): ', False, '0')
 
 computeParticipation = 'y' == getUserInput('Compute participation using chat files? y/n ', False, 'n')
 
