@@ -1,8 +1,6 @@
-# import csv
-from os import path
-from os import listdir
 from datetime import datetime
 import pandas as pd
+from os import path
 
 # Log class contains information from designated csv file
 class LogFile:

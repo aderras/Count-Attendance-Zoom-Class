@@ -70,7 +70,7 @@ for file in filenames:
 # Use the log files to compute each student's grade
 for student in studentList:
 
-  student.computeGrades( logFiles )
+  student.computeGrades( logFiles, computeParticipation)
 
 
 ############################################################################

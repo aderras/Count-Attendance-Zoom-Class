@@ -102,4 +102,4 @@ class Student:
 		chatOccurances = chatData[ chatData.columns[1] ].str.contains(fullName, case=False)
 		numMessages = sum( chatOccurances )
 
-		self.participation_grade[ chatLog.date ] = [numMessages]
+		self.participation_grade[ chatLog.date ] = [ numMessages ]
