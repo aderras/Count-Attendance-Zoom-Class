@@ -30,7 +30,7 @@ Output file is saved in project directory.
 
 This code also counts student participation by totaling the number of contributions to the Zoom chat. To use, [download chat files](https://support.zoom.us/hc/en-us/articles/115004792763-Saving-in-meeting-chat) to the same location as the usage report files. 
 
-The participation file does not contain the date of the class, so the date must be included in the filename in the format MMDDYYYY, separated by an underscore. E.g. 'any-name_09152020.txt.'
+The chat file does not contain the date of the class, so the date must be included in the filename in the format MMDDYYYY, separated by an underscore. E.g. 'any-name_09152020.txt.'
 
 
 
