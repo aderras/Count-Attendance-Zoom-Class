@@ -1,4 +1,4 @@
-# grader-zoom-class
+# Count-Attendance-Zomm-Class
 Take attendance for online Zoom class
 
 Author: Amel Derras-Chouk
