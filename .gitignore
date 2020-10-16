@@ -1,4 +1,6 @@
-log-files-local/
-.gitignore
+log-files-lecture/
+log-files-12pm/
+log-files-4pm/
+log-files-tutoring/
 test.py
 __pycache__

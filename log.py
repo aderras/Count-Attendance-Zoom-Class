@@ -77,7 +77,7 @@ class LogFile:
                     self.date = pd.to_datetime(df.iloc[0]['Start Time']).date()
 
                     # Set the class start time and duration
-                    self.start_time = datetime.strptime(start, "%I:%M %p").time()
+                    self.start_time = start 
                     self.duration = int(dur)
 
 

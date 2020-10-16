@@ -32,5 +32,16 @@ This code also counts student participation by totaling the number of contributi
 
 The chat file does not contain the date of the class, so the date must be included in the filename in the format MMDDYYYY, separated by an underscore. E.g. 'any-name_09152020.txt.'
 
+## How to download attendance reports from Zoom ##
+
+	1. Select reports from Zoom home page. 
+	[!step1](img/step1edit.png)
+	2. Select usage
+	[!step2](img/step2edit.png)
+	2. Select class for which you'd like to report
+	[!step3](img/step3edit.png)
+	2. Check "Export with meeting data" before clicking export
+	[!step4](img/step4edit.png)
+
 
 

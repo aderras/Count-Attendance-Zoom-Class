@@ -2,6 +2,7 @@ from log import LogFile
 from student import Student
 import glob
 import pandas as pd
+from datetime import datetime
 
 # add comments, amel.
 
@@ -18,20 +19,44 @@ def getUserInput(prompt, required=False, defaultInput=''):
     else:
         return res
 
+def getStartTime():
+
+    startTime = getUserInput('\nEnter the time attendance is taken in the format HH:MM AM (or PM): ', True)
+
+    try: 
+
+        return datetime.strptime(startTime, "%I:%M %p").time()
+
+
+    except ValueError:
+
+        print('Incorrect time format. Try again. ')
+        
+        return getStartTime()
+
+
 
 # First, ask for a few inputs
-print('For the following user inputs press enter to use default values, when available.')
-logPath = getUserInput('Enter directory where log files are stored in the fomat "path-to-files/". Press enter to use default directory. ', False, 'log-files/' )
+logPath = getUserInput('\nEnter directory where log files are stored in the fomat "path-to-files/". Press enter to use default directory, "log-files/"', False, 'log-files/' )
 
-rosterName = getUserInput('Enter file name of class roster. Press enter to use default. ' , False, 'roster.csv')
+# Check that the directory is formatted correctly
+if logPath[-1] != '/':
+    logPath = logPath + '/'
 
-startTime = getUserInput('Enter the time attendance is taken in the format HH:MM AM (or PM): ', True)
 
-duration = getUserInput('Enter the minimum duration considered present (minutes): ', False, '0')
+rosterName = getUserInput('\nEnter file name of class roster, located in path previously specified. Press enter to use default name, "roster.csv". ' , False, 'roster.csv')
 
-computeParticipation = 'y' == getUserInput('Compute participation using chat files? y/n ', False, 'n')
+startTime = getStartTime()
 
-outputName = getUserInput('Enter output filename: ', False, 'computed_grades.xlsx')
+
+duration = getUserInput('\nEnter the minimum duration considered present (minutes): ', False, '0')
+
+computeParticipation = 'y' == getUserInput('\nCompute participation using chat files? y/n ', False, 'n')
+
+outputName = getUserInput('\nEnter output filename: ', False, 'computed_grades.xlsx')
+
+if '.xlsx' not in outputName:
+    outputName = outputName + '.xlsx'
 
 
 ###########################################################################
