@@ -128,14 +128,14 @@ for student in studentList:
   newRow.update( student.attendance_total  )
 
   # Add a new row to the dataframe 
-  attDf = pd.concat( [ pd.DataFrame(newRow) , attDf ] )
+  attDf = pd.concat( [ attDf, pd.DataFrame(newRow) ] )
 
 
   # Same steps for participation grade, if calculated
   if computeParticipation:
       newRow = {'Name': student.first_name + ' '+ student.last_name}
       newRow.update( student.participation_grade )
-      parDf = pd.concat( [ pd.DataFrame(newRow) , parDf ] )
+      parDf = pd.concat( [ parDf, pd.DataFrame(newRow)  ] )
 
 attDf = attDf[ columns ]
 
