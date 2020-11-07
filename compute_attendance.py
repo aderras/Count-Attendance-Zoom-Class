@@ -6,6 +6,9 @@ from datetime import datetime
 
 # Main file for Zoom attendance/participation tracker.
 
+# Next steps:
+#  + Organize error log
+
 
 # getUserInput obtains information from the user, with the option to set default
 # values if the input is not required.
@@ -64,7 +67,7 @@ duration = getUserInput('\nEnter the minimum duration considered present (minute
 
 computeParticipation = 'y' == getUserInput('\nCompute participation using chat files? y/n ', False, 'n')
 
-outputName = getUserInput('\nEnter output filename: ', False, 'computed_grades.xlsx')
+outputName = getUserInput('\nEnter output filename: ', False, 'output_file.xlsx')
 
 if '.xlsx' not in outputName:
     outputName = outputName + '.xlsx'
