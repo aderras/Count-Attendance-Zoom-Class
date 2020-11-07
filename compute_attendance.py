@@ -4,8 +4,14 @@ import glob
 import pandas as pd
 from datetime import datetime
 
-# add comments, amel.
+# Main file for Zoom attendance/participation tracker.
 
+
+# getUserInput obtains information from the user, with the option to set default
+# values if the input is not required.
+#
+# in: prompt = request to send to user, required = boolean specifying whether this
+# is required input, defaultInput = default value to set, if user chooses not to
 def getUserInput(prompt, required=False, defaultInput=''):
 
     res = input(prompt)
@@ -19,9 +25,13 @@ def getUserInput(prompt, required=False, defaultInput=''):
     else:
         return res
 
+# getStartTime asks the user to enter the time at which to take attendance in 
+# a specific format, and checks whether the format requirement is satisfied by 
+# parsing to a datetime object. Calls itself again if unable to parse.
 def getStartTime():
 
-    startTime = getUserInput('\nEnter the time attendance is taken in the format HH:MM AM (or PM): ', True)
+    startTime = getUserInput('\nEnter the time attendance is taken in '+
+      'the format HH:MM AM (or PM): ', True)
 
     try: 
 
@@ -37,17 +47,18 @@ def getStartTime():
 
 
 # First, ask for a few inputs
-logPath = getUserInput('\nEnter directory where log files are stored in the fomat "path-to-files/". Press enter to use default directory, "log-files/"', False, 'log-files/' )
+logPath = getUserInput('\nEnter directory where log files are stored in the '+
+  'fomat "path-to-files/". Press enter to use default directory, "log-files/". ', False, 'log-files/' )
 
 # Check that the directory is formatted correctly
 if logPath[-1] != '/':
     logPath = logPath + '/'
 
 
-rosterName = getUserInput('\nEnter file name of class roster, located in path previously specified. Press enter to use default name, "roster.csv". ' , False, 'roster.csv')
+rosterName = getUserInput('\nEnter file name of class roster, located in '+
+  logPath +'. Press enter to use default name, "roster.csv". ' , False, 'roster.csv')
 
 startTime = getStartTime()
-
 
 duration = getUserInput('\nEnter the minimum duration considered present (minutes): ', False, '0')
 
@@ -62,16 +73,16 @@ if '.xlsx' not in outputName:
 ###########################################################################
 ########################################## Grade calculations start here ##
 
-# Create a log object from data file called roster.csv.
+# Create a log object for the roster. 
 # File must contain 'First Name' and 'Last Name' columns. (Blackboard
-# grade center file was used to demonstrate.)
+# grade center file works for this.
 roster = LogFile(logPath + rosterName)
 
 # Get all names
 firstNames = roster.raw_data['First Name'].array
 lastNames = roster.raw_data['Last Name'].array
 
-# Make a student object for every row in the roster. Store students
+# Make a student object for every name. Store students
 # in studentList
 studentList = []
 
@@ -81,28 +92,30 @@ for first, last in zip(firstNames, lastNames):
 
     studentList.append( Student( first, last ) )
 
-# Import all the log files. These 2 different types of log file come from
-# Zoom. Note that chat files must contain date in their name in the format
-# ddmmyyyy (e.g. Jan 1, 2020 would 01012020)
-filenames = glob.glob(logPath+ '*')
+# Import attendance and chat log files. (Only uses chat files if participation
+# is calculated.) The 2 types of log file come from Zoom. Note that chat files 
+# must contain date in their name in the format ddmmyyyy (e.g. Jan 1, 2020 
+# would 01012020)
+filenames = glob.glob(logPath + '*')
 logFiles = []
 
 for file in filenames:
 
     logObject = LogFile( file, startTime, duration )
-    logFiles.append( logObject )
+    if logObject != None:
+      logFiles.append( logObject )
 
 # Use the log files to compute each student's grade
 for student in studentList:
 
-  student.computeGrades( logFiles, computeParticipation)
+  student.computeGrades( logFiles, computeParticipation )
 
 
 ############################################################################
 ############################################# Export process starts here ###
 
 # Get all the dates of the log files. This will label the columns of the 
-# final excel sheet. Sort dates in the last step.
+# final excel sheet. Sort dates sequentially in the last step.
 dateList = []
 for logFile in logFiles:
   if logFile.date != None and logFile.date not in dateList:
@@ -116,20 +129,19 @@ columns['Name'] = ''
 for date in dateList:
     columns[ date ] = []
 
-# Create an attendance dataframe and a participation dataframe
+# Create an attendance dataframe and a participation dataframe (if needed)
 attDf = pd.DataFrame( columns )
-parDf = pd.DataFrame( columns )
+if computeParticipation:
+  parDf = pd.DataFrame( columns )
 
 for student in studentList:
 
-  # Create a row containing student name. The row contains all grades
-  # for dates in the colums specified
+  # Create a row of student name followed by all grades
   newRow = {'Name': student.first_name + ' '+ student.last_name}
   newRow.update( student.attendance_total  )
 
-  # Add a new row to the dataframe 
+  # Add new row to the dataframe 
   attDf = pd.concat( [ attDf, pd.DataFrame(newRow) ] )
-
 
   # Same steps for participation grade, if calculated
   if computeParticipation:
@@ -142,7 +154,7 @@ attDf = attDf[ columns ]
 if computeParticipation:
     parDf = parDf[ columns ]
   
-# Final file contains
+# Xlsx file contents:
 #   1. Sheet 1 has all students and their attendance grades for all dates
 #   2. Sheet 2 has all students and their participation grades for all dates
 #   3  Sheet 3 is an error log. Contains all names that were not catagorized.
@@ -160,10 +172,10 @@ for log in logFiles:
     if log.file_type == 1 or log.file_type == 2:
 
         # Add a row with the date
-        errDf = pd.concat( [ pd.DataFrame( {'',log.date.strftime('%m-%d-%Y')} ) , errDf] )
+        errDf = pd.concat( [ errDf, pd.DataFrame( {'',log.date.strftime('%m-%d-%Y')} ) ] )
 
         # Add row of whatever was in log file
-        errDf = pd.concat( [log.data, errDf] )
+        errDf = pd.concat( [errDf, log.data] )
 
         # Add empty row
         errDf.append( pd.Series(' '), ignore_index=True )

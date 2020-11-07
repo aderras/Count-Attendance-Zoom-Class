@@ -28,7 +28,9 @@ class LogFile:
                 self.raw_data = pd.read_csv(name) 
 
             else: 
-                print('Error: File type is not .csv or .txt.')
+                print('Error: '+ name+' is not of type .csv or .txt. '+
+                    'Proceeding without this file.')
+                return( None )
 
         else:
             print( "Error:" + name + " does not exist." )
