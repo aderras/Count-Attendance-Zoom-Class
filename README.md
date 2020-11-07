@@ -13,13 +13,13 @@ To use this script, need:
   1. CSV file containing student roster. Sample roster was [downloaded from Blackboard](https://help.blackboard.com/Learn/Instructor/Grade/Grading_Tasks/Work_Offline_With_Grade_Data#download-grades-from-the-grade-center_OTP-1) course. Code assumes that roster contains the columns 'First Name' and 'Last Name.'
   2. Meeting usage information from each Zoom class. (See instructions below.)
   
-Compute attendance by running 'python compute_grades.py' in the project directory. User will be prompted to enter
+Compute attendance by running **'python compute_attendance.py'**. User will be prompted to enter
   - Location of log files (default: project-dir/log-files/)
   - Roster filename, stored in directory specified in previous step (default: roster.csv)
   - Time at which to take attendance (Required input. Enter a later time to include a grace period.)
   - Duration of class, or minimum time spent in class to be marked present (default: 0)
   - Compute participation y/n? (default: n)
-  - Output filename (default: computed_grades.xlsx)
+  - Output filename (default: output_file.xlsx)
 
 Output file is saved in project directory. 
 
